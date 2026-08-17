@@ -270,7 +270,7 @@ function Hero() {
         transition={{ duration: 0.6, delay: 0.25 }}
         className="mt-6 font-mono text-sm md:text-base text-zinc-500"
       >
-        data platform engineer @ payu · python · playwright · jenkins · aws
+        data platform engineer @ payu · python · playwright · jenkins · aws · elk
       </motion.p>
 
       <motion.p
