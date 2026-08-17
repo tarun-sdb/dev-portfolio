@@ -88,7 +88,7 @@ const CHAPTERS = [
 
 const WHOAMI = [
   { t: '> whoami', c: 'cyan' },
-  { t: 'Data Engineer @ PayU', c: 'plain' },
+  { t: 'Data Platform Engineer @ PayU', c: 'plain' },
   { t: 'ex codem.com · test.io', c: 'dim' },
   { t: 'BTech CS @ VIT · GPA 7.86/10', c: 'dim' },
   { t: '> skills --list', c: 'cyan' },
@@ -270,7 +270,7 @@ function Hero() {
         transition={{ duration: 0.6, delay: 0.25 }}
         className="mt-6 font-mono text-sm md:text-base text-zinc-500"
       >
-        data engineer @ payu · python · playwright · jenkins · aws
+        data platform engineer @ payu · python · playwright · jenkins · aws
       </motion.p>
 
       <motion.p
@@ -361,7 +361,7 @@ function About() {
             I make data systems that <span className="text-neon">survive peak</span>.
           </h2>
           <p className="text-zinc-400 leading-relaxed mb-5">
-            Data Engineer at PayU, building the Account Aggregator Router MVP end-to-end. Before that I shipped a
+            Data Platform Engineer at PayU, building the Account Aggregator Router MVP end-to-end. Before that I shipped a
             food-delivery platform serving 10,000+ weekly users, rewrote its REST layer for −25% latency, and caught
             114 bugs as a freelancer — 40 of them fixed by clients. The 30+ RPS load tests? I run them on my own code
             first.
