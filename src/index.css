@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-ink: #050505;
+  --color-neon: #22d3ee;
+  --color-mint: #6ee7b7;
+  --color-frost: #c4b5fd;
+}
+
+html,
+body {
+  background: #050505;
+  color: #d4d4d8;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  /* clip, not hidden: overflow:hidden would break position:sticky */
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.25);
+  color: #fff;
+}
+
+/* ---- terminal line states ---- */
+.term-line {
+  color: #3f3f46; /* faint blueprint preview before activation */
+  transition: color 0.3s, filter 0.3s;
+}
+.term-line.t-green {
+  color: #6ee7b7;
+}
+.term-line.t-cyan {
+  color: #67e8f9;
+}
+.term-line.t-frost {
+  color: #c4b5fd;
+}
+.term-line.t-dim {
+  color: #71717a;
+}
+.term-line.t-plain {
+  color: #d4d4d8;
+}
+.term-line.t-active {
+  filter: brightness(1.45);
+  text-shadow: 0 0 12px rgba(34, 211, 238, 0.35);
+}
+/* untyped preview: dimmed, colors always in DOM behind this */
+.term-line.u {
+  color: #3f3f46 !important;
+  filter: none !important;
+}
+.term-line.t-active::after {
+  content: "▌";
+  margin-left: 2px;
+  display: inline-block;
+  color: #67e8f9;
+  animation: blink 1s steps(1) infinite;
+}
+/* progress dots: filled state */
+span.on {
+  background: #22d3ee !important;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.65);
+}
+
+/* internal terminal scrollbar — subtle */
+.terminal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+}
+.terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---- ambient background layers (fixed, pointer-events none) ---- */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+}
+
+.grid-lines {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 72%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 72%);
+}
+
+.glow-orb {
+  animation: floaty 13s ease-in-out infinite;
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -22px, 0) scale(1.07);
+  }
+}
+
+/* scroll progress bar */
+.scroll-progress {
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* reduced motion: kill everything */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
