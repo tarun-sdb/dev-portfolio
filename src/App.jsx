@@ -143,6 +143,7 @@ function Terminal({ ch, cmd, lines, mode = 'scrub', sectionRef }) {
         onUpdate: (self) => {
           const idx = Math.floor(self.progress * (n + 1))
           setState(Math.min(idx, n))
+          window.__setActive?.(ch?.id, self.progress)
         },
       })
       return () => st.kill()
@@ -453,6 +454,30 @@ function Nav() {
 }
 
 function Dots() {
+  const dotRefs = useRef({})
+  const numRefs = useRef({})
+  useEffect(() => {
+    let activeId = null
+    window.__setActive = (id, p) => {
+      const inside = p > 0.001 && p < 1
+      if (inside && activeId !== id) {
+        if (activeId) {
+          dotRefs.current[activeId]?.classList.remove('on')
+          numRefs.current[activeId]?.classList.remove('num-on')
+        }
+        activeId = id
+        dotRefs.current[id]?.classList.add('on')
+        numRefs.current[id]?.classList.add('num-on')
+      } else if (!inside && activeId === id) {
+        activeId = null
+        dotRefs.current[id]?.classList.remove('on')
+        numRefs.current[id]?.classList.remove('num-on')
+      }
+    }
+    return () => {
+      delete window.__setActive
+    }
+  }, [])
   return (
     <div className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-4">
       {CHAPTERS.map((ch) => (
@@ -462,8 +487,16 @@ function Dots() {
           className="group flex items-center gap-2"
           aria-label={ch.title}
         >
-          <span className="font-mono text-[10px] text-zinc-600 group-hover:text-neon transition-colors">{ch.num}</span>
-          <span className="w-2 h-2 rounded-full ring-1 ring-white/20 group-hover:bg-neon group-hover:ring-neon bg-transparent transition-all" />
+          <span
+            ref={(el) => (numRefs.current[ch.id] = el)}
+            className="font-mono text-[10px] text-zinc-600 group-hover:text-neon transition-colors"
+          >
+            {ch.num}
+          </span>
+          <span
+            ref={(el) => (dotRefs.current[ch.id] = el)}
+            className="w-2 h-2 rounded-full ring-1 ring-white/20 bg-transparent group-hover:bg-neon group-hover:ring-neon transition-all"
+          />
         </button>
       ))}
     </div>
